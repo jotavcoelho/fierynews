@@ -23,6 +23,12 @@
 
   svg.closeIcon {
     margin-left: 1rem;
+
+    transition: filter 0.3s;
+
+    &:hover {
+      filter: brightness(1.8);
+    }
   }
 
   transition: filter 0.3s;
