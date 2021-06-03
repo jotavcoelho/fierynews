@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { ActivatableLink } from '../ActivatableLink';
 
 import { SignInButton } from '../SignInButton';
 
@@ -10,12 +10,12 @@ export function Header() {
       <div className={styles.headerContent}>
         <img src="/images/logo.svg" alt="fierynews" />
         <nav>
-          <Link href="/">
-            <a className={styles.active}>Home</a>
-          </Link>
-          <Link href="/posts">
+          <ActivatableLink activeClassName={styles.active} href="/">
+            <a>Home</a>
+          </ActivatableLink>
+          <ActivatableLink activeClassName={styles.active} href="/posts">
             <a>Posts</a>
-          </Link>
+          </ActivatableLink>
         </nav>
 
         <SignInButton />
