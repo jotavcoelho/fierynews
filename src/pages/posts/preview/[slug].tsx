@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next"
+import { GetStaticPaths, GetStaticProps } from "next"
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/dist/client/router";
 import Head from 'next/head';
@@ -55,12 +55,21 @@ export default function PostPreview({ post }: PostPreviewProps) {
   )
 }
 
-export const getStaticPaths = () => {
+export const getStaticPaths: GetStaticPaths = async () => { // this what lets us decide what pages we want to generate during build
   return {
-    paths: [],
-    fallback: 'blocking'
+    paths: [], // we put their paths here, it's empty cuz we don't want any of them to be preloaded
+    fallback: 'blocking',
+      // this thing can receive true, false and 'blocking'
+      // true
+        // if the user accesses a page without it being prerendered, it'll load it client-side, which is a no-no
+      // false
+        // if the post wasn't statically generated yet, returns a 404
+      // 'blocking'
+        // the ideal, when it wasn't generated yet, it tries to do it on the serverside
   }
 }
+
+// getstaticpaths can only be used on these dynamic pages (with [these] on their filename)
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params;
@@ -83,6 +92,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       post
-    }
+    },
+    revalidate: 60 * 30, // 30mins
   }
 }
